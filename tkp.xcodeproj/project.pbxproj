@@ -1,1 +1,95 @@
-// !PBXProject minimal for actions build
+// !$*UTF8*$!
+{
+    archiveVersion = 1;
+    classes = {};
+    objectVersion = 60;
+    objects = {
+
+/* Project */
+        1 = {
+            isa = PBXProject;
+            attributes = {
+                LastUpgradeCheck = 1600;
+            };
+            buildConfigurationList = 2;
+            compatibilityVersion = "Xcode 16.0";
+            developmentRegion = en;
+            hasScannedForEncodings = 0;
+            knownRegions = (en);
+            mainGroup = 3;
+            productRefGroup = 4;
+            projectDirPath = "";
+            targets = (5);
+        };
+
+/* Build config list */
+        2 = {
+            isa = XCConfigurationList;
+            buildConfigurations = (6,7);
+            defaultConfigurationIsVisible = 0;
+            defaultConfigurationName = Release;
+        };
+
+/* main group */
+        3 = {
+            isa = PBXGroup;
+            children = (8,4);
+            sourceTree = "<group>";
+        };
+
+        4 = {
+            isa = PBXGroup;
+            children = (9);
+            sourceTree = "<group>";
+        };
+
+/* App target */
+        5 = {
+            isa = PBXNativeTarget;
+            buildConfigurationList = 10;
+            buildPhases = (11,12,13);
+            buildRules = ();
+            dependencies = ();
+            name = tkp;
+            productName = tkp;
+            productType = "com.apple.product-type.application";
+            productReference = 9;
+        };
+
+        6 = { isa = XCBuildConfiguration; name = Debug; buildSettings = {}; };
+        7 = { isa = XCBuildConfiguration; name = Release; buildSettings = {}; };
+
+        8 = {
+            isa = PBXGroup;
+            children = ();
+            path = tkp;
+            sourceTree = "<group>";
+        };
+
+        9 = {
+            isa = PBXFileReference;
+            explicitFileType = wrapper.application;
+            path = tkp.app;
+            sourceTree = BUILT_PRODUCTS_DIR;
+        };
+
+        10 = {
+            isa = XCConfigurationList;
+            buildConfigurations = (14,15);
+            defaultConfigurationIsVisible = 0;
+            defaultConfigurationName = Release;
+        };
+
+        11 = { isa = PBXSourcesBuildPhase; files = (); };
+        12 = { isa = PBXFrameworksBuildPhase; files = (); };
+        13 = {
+            isa = PBXResourcesBuildPhase;
+            files = ();
+        };
+
+        14 = { isa = XCBuildConfiguration; name = Debug; buildSettings = { INFOPLIST_FILE = tkp/Info.plist; }; };
+        15 = { isa = XCBuildConfiguration; name = Release; buildSettings = { INFOPLIST_FILE = tkp/Info.plist; }; };
+
+    };
+    rootObject = 1;
+}
