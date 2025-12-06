@@ -1,4 +1,4 @@
-name: Build IPA (No Code Sign)
+name: Build IPA (Archive Mode)
 
 on:
   push:
@@ -18,27 +18,27 @@ jobs:
         with:
           xcode-version: "16.2"
 
-      - name: Build (No Code Signing)
+      - name: Archive (No Code Signing)
         run: |
           xcodebuild \
             -project tkp.xcodeproj \
             -scheme tkp \
             -configuration Release \
             -sdk iphoneos \
+            -archivePath build/tkp.xcarchive \
             CODE_SIGNING_ALLOWED=NO \
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGN_IDENTITY="" \
-            build \
-            -derivedDataPath build
+            archive
 
-      - name: Create IPA
+      - name: Export .app and build IPA
         run: |
-          mkdir -p export
-          APP_PATH=$(find build -type d -name "*.app" | head -n 1)
-          echo "Found app: $APP_PATH"
+          APP_PATH="build/tkp.xcarchive/Products/Applications/tkp.app"
+          echo "App Path: $APP_PATH"
+
+          mkdir -p export/Payload
+          cp -R "$APP_PATH" export/Payload/
           cd export
-          mkdir Payload
-          cp -R "$APP_PATH" Payload/
           zip -r tkp.ipa Payload/
 
       - name: Upload IPA
