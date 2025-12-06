@@ -1,0 +1,25 @@
+name: Build Unsigned IPA
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Build
+        run: |
+          xcodebuild -project tkp.xcodeproj -scheme tkp -configuration Release -sdk iphoneos CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO -derivedDataPath build
+
+      - name: Export IPA
+        run: |
+          mkdir -p build/ipa
+          xcodebuild -exportArchive -archivePath build/Build/Products/tkp.xcarchive -exportOptionsPlist ExportOptions.plist -exportPath build/ipa
+
+      - name: Upload IPA
+        uses: actions/upload-artifact@v3
+        with:
+          name: tkp-unsigned-ipa
+          path: build/ipa
