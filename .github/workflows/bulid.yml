@@ -1,4 +1,19 @@
-    - name: Build (NO signing)
+name: iOS Build IPA (No Signing)
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Build archive (NO signing)
       run: |
         xcodebuild \
           -project tkp.xcodeproj \
@@ -8,15 +23,18 @@
           CODE_SIGNING_ALLOWED=NO \
           CODE_SIGNING_REQUIRED=NO \
           CODE_SIGN_IDENTITY="" \
-          build \
-          -derivedDataPath build
+          -archivePath build/tkp.xcarchive \
+          archive
 
-    - name: Pack IPA manually
+    - name: Export IPA manually
       run: |
-        APP_PATH=$(find build -type d -name "*.app" | head -n 1)
-        echo "Found app at: $APP_PATH"
-
         mkdir -p export/Payload
-        cp -R "$APP_PATH" export/Payload/
+        cp -R build/tkp.xcarchive/Products/Applications/*.app export/Payload/
         cd export
-        zip -r tkp.ipa Payload/
+        zip -r tkp.ipa Payload
+
+    - name: Upload IPA artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: tkp
+        path: export/tkp.ipa
