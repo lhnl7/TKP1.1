@@ -1,48 +1,22 @@
-name: Build IPA (Archive Mode)
+    - name: Build (NO signing)
+      run: |
+        xcodebuild \
+          -project tkp.xcodeproj \
+          -scheme tkp \
+          -configuration Release \
+          -sdk iphoneos \
+          CODE_SIGNING_ALLOWED=NO \
+          CODE_SIGNING_REQUIRED=NO \
+          CODE_SIGN_IDENTITY="" \
+          build \
+          -derivedDataPath build
 
-on:
-  push:
-    branches: [ main ]
-  workflow_dispatch:
+    - name: Pack IPA manually
+      run: |
+        APP_PATH=$(find build -type d -name "*.app" | head -n 1)
+        echo "Found app at: $APP_PATH"
 
-jobs:
-  build:
-    runs-on: macos-14
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Select Xcode
-        uses: maxim-lobanov/setup-xcode@v1
-        with:
-          xcode-version: "16.2"
-
-      - name: Archive (No Code Signing)
-        run: |
-          xcodebuild \
-            -project tkp.xcodeproj \
-            -scheme tkp \
-            -configuration Release \
-            -sdk iphoneos \
-            -archivePath build/tkp.xcarchive \
-            CODE_SIGNING_ALLOWED=NO \
-            CODE_SIGNING_REQUIRED=NO \
-            CODE_SIGN_IDENTITY="" \
-            archive
-
-      - name: Export .app and build IPA
-        run: |
-          APP_PATH="build/tkp.xcarchive/Products/Applications/tkp.app"
-          echo "App Path: $APP_PATH"
-
-          mkdir -p export/Payload
-          cp -R "$APP_PATH" export/Payload/
-          cd export
-          zip -r tkp.ipa Payload/
-
-      - name: Upload IPA
-        uses: actions/upload-artifact@v4
-        with:
-          name: tkp-ipa
-          path: export/tkp.ipa
+        mkdir -p export/Payload
+        cp -R "$APP_PATH" export/Payload/
+        cd export
+        zip -r tkp.ipa Payload/
