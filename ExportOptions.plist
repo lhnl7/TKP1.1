@@ -1,0 +1,7 @@
+{
+  "method": "ad-hoc",
+  "compileBitcode": false,
+  "destination": "export",
+  "signingStyle": "manual",
+  "stripSwiftSymbols": true
+}
